@@ -1,6 +1,6 @@
 from transformers import GPT2Config, GPT2Model, GPT2LMHeadModel, GPT2TokenizerFast, PreTrainedTokenizerFast
 from transformers import Trainer, TrainingArguments
-from tokenizers import BertWordPieceTokenizer
+from tokenizers import BertWordPieceTokenizer, CharBPETokenizer
 
 import torch
 
@@ -15,6 +15,13 @@ config = GPT2Config()
 # for pre-training
 model = GPT2LMHeadModel(config)
 
+# LMHeadModel forward example
+inputs = tokenizer("Hello, my dog is cute", return_tensors="pt")
+outputs = model(**inputs, labels=inputs["input_ids"])
+loss = outputs.loss
+logits = outputs.logits
+
+# using transformers trainer module(hard to customize model internal)
 training_args = TrainingArguments(
     output_dir='./results',          # output directory
     num_train_epochs=3,              # total number of training epochs
