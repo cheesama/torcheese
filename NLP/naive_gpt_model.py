@@ -40,14 +40,12 @@ class GPTDecoder(nn.Module):
         return mask
 
     def forward(self, tokens):
-        input_feature = tokens
-        '''
         token_feature = self.token_embedding(tokens)
         position_feature = self.position_embedding(
             torch.arange(self.max_seq_numa)
         ).type_as(token_feature)
         input_feature = token_feature + position_feature
-        '''
+
         src_mask = self.generate_square_subsequent_mask(self.max_seq_num)
 
         input_feature = input_feature.transpose(1,0) # b s d -> s b d
@@ -59,8 +57,6 @@ class GPTDecoder(nn.Module):
 
         input_feature = input_feature.transpose(0, 1) # s b d -> b s d
 
-        return input_feature
-
-        #token_preds = self.token_ffn(input_feature)
-        #return token_preds
+        token_preds = self.token_ffn(input_feature)
+        return token_preds
         

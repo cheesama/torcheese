@@ -1,4 +1,8 @@
 torch
 
+# NLP
+transformers
+tokenizers
+
 einops
 
